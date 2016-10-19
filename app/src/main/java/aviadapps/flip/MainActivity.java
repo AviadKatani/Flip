@@ -1,18 +1,14 @@
 package aviadapps.flip;
 
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,7 +30,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         textView = (TextView)findViewById(R.id.textView);
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
-
         btnDaily = (Button)findViewById(R.id.btnDaily);
         btnDaily.setOnClickListener(this);
     }
@@ -57,21 +52,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
         protected String doInBackground(Void... params) {
-            String apiID = "", urlAddress;
-            Uri.Builder builder = new Uri.Builder();
-            /*
-            builder.scheme("http");
-            builder.authority("quotes.rest");
-            builder.appendPath("quote.json");
-            builder.appendQueryParameter("api_key", apiID);
-            urlAddress = builder.build().toString();
-            */
+            String urlAddress;
             urlAddress = "https://favqs.com/api/qotd";
             BufferedReader reader = null;
             StringBuffer buffer = new StringBuffer();
-            String dailyQuotes = "", check = "";
+            String dailyQuotes = "";
             HttpURLConnection urlConnection = null;
-            JSONObject jsonObject = null;
 
             try {
                 URL url = new URL(urlAddress);
@@ -93,14 +79,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 try {
                     JSONObject jsonObject1 = new JSONObject(dailyQuotes);
                     JSONObject json = jsonObject1.getJSONObject("quote");
-                    /*JSONArray jsonArray = json.getJSONArray("tags");
-                    dailyQuotes = "Quote kind: ";
-                    for(int i = 0; i < jsonArray.length(); i++) {
-                        if(i + 1 >= jsonArray.length())
-                            dailyQuotes += jsonArray.get(i);
-                        else dailyQuotes += jsonArray.get(i) + ", ";
-                    }
-                    */
                     dailyQuotes = json.getString("body");
                     dailyQuotes += "\n\n";
                     dailyQuotes += "~" + json.getString("author");
